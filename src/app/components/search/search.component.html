@@ -1,0 +1,17 @@
+<!-- Topics listos -->
+<div class="col-lg-12 mt-3">
+    <h2> {{ page_title }} </h2>
+    <hr>
+    <ul class="list-group list-topics" *ngIf="topics">
+        <li class="list-group-item" *ngFor="let topic of topics">
+            <h4>
+                <a [routerLink]="['/tema', topic._id]"> {{ topic.title }} </a>
+            </h4>
+            <!-- Para mostrar correctamente el nombre de los usuarios de realiza el "populate" en Backend en el controlador de busquedas -->
+            <span class="badge badge-primary"> Creado por: {{ topic.user.name }} </span>
+            <!-- Fecha usando pipes -->
+            <span class="badge badge-light">{{ topic.date | amLocale: 'es' | amTimeAgo }} </span>
+            <a class="btn btn-sm btn-success float-right" [routerLink]="['/inicio']"> Leer </a>
+        </li>
+    </ul>
+</div>

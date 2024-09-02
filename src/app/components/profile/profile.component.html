@@ -1,0 +1,24 @@
+<div class="jumbotron text-center">
+
+    <div class="mx-auto" *ngIf="user.image == null else elseBlock">
+        <img src="../assets/default.png" class="profile-image">
+    </div>
+    <ng-template class="mx-auto" #elseBlock>
+        <img src="{{ url + 'avatar/' + user.image }}" class="profile-image">
+    </ng-template>
+
+    <h1 class="display-4"> {{ user.name  +' '+ user.surname}} </h1>
+    <p class="lead"> {{ user.email }} </p>
+    
+    <!--- Lista de Topics -->
+    <div class="list-group text-left">
+        <a *ngFor="let topic of topics" class="list-group-item list-group-item-action flex-column align-items-start pointer">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1 text-primary"> {{ topic.title }} </h5>
+            <small> {{ topic.date | amLocale: 'es' | amTimeAgo }}  </small>
+            </div>
+            <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+        </a>
+    </div>
+    
+</div>

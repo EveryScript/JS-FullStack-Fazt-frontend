@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+/* --- ESTILOS GLOBALES --- */
+/*
+    Los siguientes estilos responden a cualquier archivo dentro del proyecto de angular
+*/
+
+.mi_avatar {
+    width: 40px;
+    margin-top: 5px;
+    border-radius: 900px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.profile-image {
+    border-radius: 999px;
+    width: 150px;
+}

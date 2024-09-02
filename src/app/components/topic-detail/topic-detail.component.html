@@ -1,0 +1,64 @@
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-header">
+                <button class="btn btn-primary" [routerLink]="['/temas']"> << Atras </button>
+            </div>
+            <blockquote class="blockquote mb-0">
+                <h1> {{ topic.title }} </h1>
+                <span class="badge badge-primary"> Creado por: {{ topic.user.name }} </span>
+                <!-- Fecha usando pipes -->
+                <span class="badge badge-light">{{ topic.date | amLocale: 'es' | amTimeAgo }} </span>
+                <span class="badge badge-warning float-right"> {{ topic.lang }} </span>
+
+                <p class="mt-2 font-weight-light"> {{ topic.content }} </p>
+                
+                <ngx-highlight-js lang="{{ topic.lang }}" code="{{ topic.code }}">
+                </ngx-highlight-js>
+
+                <p> {{ topic.code }} </p>
+            </blockquote>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <!-- Comentarios -->
+    <div id="comment-box" class="mt-2 col-lg-9">
+        <h3> Comentarios </h3>
+        <hr>
+        
+        <!-- Alertas de registro de Comentarios -->
+        <div class="alert alert-success col-md-5 mt-3" *ngIf="status=='success'">
+            Tu comentario de ha añadido correctamente
+        </div>
+        <div class="alert alert-danger col-md-5 mt-3" *ngIf="status=='error'">
+            Ha ocurrido un error al añadir el comentario
+        </div>
+
+        <form #formComment="ngForm" (ngSubmit)="onSubmit(formComment);" *ngIf="identity">
+            <div class="form-group">
+                <label class="mt-2" for="content">Ingresa tu comentario</label>
+                <!-- Campo de texto con binding relacionado al objeto -->
+                <textarea type="text" name="content" #content="ngModel" [(ngModel)]="comment.content" class="form-control mt-1" required placeholder="Comenta ..."></textarea>
+                <!-- Validación datos con directivas -->
+                <small *ngIf="!content.valid && content.touched" class="invalid-feedback d-block">El comentario no es valido</small>
+            </div>
+            <input type="submit" value="Comentar" class="btn btn-primary" [disabled]="formComment.invalid">
+        </form>
+
+        <ul class="list-group mt-4">
+            <li class="list-group-item" *ngFor="let comment of topic.comments">
+                <!-- Ruta de la imagen de avatar -->
+                <div class="avatar_mask float-left mr-2">
+                    <img src="{{ url + 'avatar/' + comment.user.image }}" class="mi_avatar">
+                </div>
+                <span class="badge badge-primary"> {{ comment.user.name +' '+ comment.user.surname }} </span>
+                <span class="badge badge-light">{{ comment.date | amLocale: 'es' | amTimeAgo }} </span> <br>
+                <span> {{ comment.content }} </span>
+                <!-- Boton de Borrar -->
+                <a class="text-danger ml-2 pe-auto pointer" *ngIf="identity._id == comment.user._id" (click)="eliminar(comment._id);"> <u> Borrar </u> </a>
+            </li>
+        </ul>
+    </div>
+</div>

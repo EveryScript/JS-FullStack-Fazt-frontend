@@ -1,0 +1,125 @@
+--- FRONT END ---
+
+Una vez terminado el backend se procede a crear un proyecto nuevo de Angular llamado "foro-angular"
+	1. Abrir el CMD
+	2. Ingresar el directorio y crear un nuevo proyecto
+	3. No aplicar el Routing
+	4. Elegir el lenguaje CSS
+	5. Iniciar el proyecto con "ng serve"
+	6. Utilizar el servidor http://localhost:4200 para ver el proyecto
+
+Además se instalan algunas dependencias para utilizarlas en el proyecto de Angular
+	1. Abrir el CMD
+	2. Ir a Google y buscar en https://www.npmjs.com/ las librerias necesarias
+	3. Para el proyecto del Foro es necesario instalar las siguientes librerias:
+		- @nowzoo/ngx-highlight-js 	(Libreria para codigo en pantalla de HTML)
+		- angular-file-uploader		(Libreria para subir archivos a Angular)
+		- angular2-moment		(Libreria para fechas y tiempos)
+		- bootstrap			(Libreria para CSS)
+		- jquery			(Libreria para el codigo de Javascript)
+		- @types/jquery		(Compatibilidad entre Angular y Jquery)
+	4. Para cada instalación es necesario Copiar y pegar la linea de codigo "npm" en el CMD con el directorio correcto
+	5. Además la mayoria de las ejecuciones en "npm" termina con el gusrdado automatico o "--save"
+	6. Despues de cada instalación se muestran las dependiencias registradas en el proyecto de Angular
+	    en el archivo "package.json"
+
+PARA COMENZAR CON EL DESARROLLO
+	1. Abrir el proyecto en algun editor
+	2. Crear una Nueva Carpeta en src/app/        llamada "models" para crear los modelos
+	    sobre los cuales se trabaja en el proyecto
+	3. Crear un archivo.ts por cada modelo de entidades segun el modelo definido en el BackEnd
+
+CARGAR BOOTSTRAP AL PROYECTO
+	1. Ir al archivo "angular.json"
+	2. Agregar las hojas de estilo de Bootstrap con una linea de codigo que indica la ubicación del archivo				"node_modules/bootstrap/dist/css/bootstrap.min.css"
+	NOTA: Todas las dependencias descargadas con Angular se encuentran en la carpeta "node_modules/"
+	3. Iniciar borrando todo el contenido de la pagina "app.component.html"
+	NOTA: El contenido de la pagina generalmente es traido directamente desde Bootstrap (copiar codigo y editar)
+
+AHORA A CREAR COMPONENTES
+	1. Abrimos una nueva ventana de CMD y ejecutamos el comando
+		"ng g component components/mi_nuevo_componente"
+	2. Al ejecutar el comando se crea la carpeta con todos los archivos y además se añade en el modulo app.module.ts
+	NOTA. En caso de no funcionar, volver a ejecutar "ng serve"
+
+SISTEMA DE RUTAS DE ANGULAR
+	1. Crear un nuevo archivo en la carpeta "app" llamado "app.routing.ts"
+	2. Agregar los modulos de Routing
+		import { ModuleWithProviders } from "@angular/core";
+		import { Routes, RouterModule } from "@angular/router";
+	3. Importar los componentes creados
+		import { LoginComponent } from "./components/login/login.component";
+		import { RegisterComponent } from "./components/register/register.component";
+	4. Crear un array de rutas (constante) para un componente a cada ruta por URL
+		const appRoutes: Routes = [
+		    { path: '', component: LoginComponent },            // Ruta con URL vacia
+		    { path: 'login', component: LoginComponent },       // Ruta con URL: "login"
+		    { path: 'registro', component: RegisterComponent }, // Ruta con URL: "registro",
+		    { path: '**', component: LoginComponent }           // Ruta que no existe
+		];
+	5. Exportar configuración de rutas
+		export const appRoutingProviders: any[] = [];
+		export const routing: ModuleWithProviders<any> = RouterModule.forRoot(appRoutes);
+	6. Importar la configuración de rutas en "app.module.ts"
+		import { routing, appRoutingProviders } from './app.routing';
+	7. Agregar en 'imports' y en 'providers' los parametros de routing y appRoutingProviders respectivamente
+	8. Agregar en app.component.html la etiqueta <router-outlet></router-outlet>
+
+AGREGAR RUTA A ENLACE
+	1. Agregar un enlace en el componente en el que se utilizó el <router-outlet></router-outlet>
+	2. En lugar de utilizar el <a href="dirección"> utilizar lo siguiente (usar el nombre de la ruta por URL)
+		<a [routerLink]="['/inicio]">Ir a inicio</a>
+
+COMPONENTE DE REGISTRO ESTANDAR
+	0. Antes de trabajar con formularios es necesario cargar un modulo en app.module.ts
+		import { FormsModule } from '@angular/forms';
+	Además añadirlo en los imports de el mismo archivo
+
+	1. Crear un nuevo componente para usar formularios de registro
+	2. Importar el modelo correspondiente (usuarios, producto, ...)
+	3. Definir las propiedades que corresponden a la entidad a crear (user, product) del tipo Modelo
+		public user: User;
+	4. Inicializar los objetos de tipo Modelos con valores vacios en el constructor (segun las propiedades del modelo)
+		this.user = new User('', '', '', '', )
+	5. Utilizar un evento onSubmit() para capturar todos los datos de un formulario para después utilizarlos en el objeto
+
+CREAR UN SERVICIO PARA ENVIAR DATOS AL BACKEND
+	0. Crear una carpeta en el directorio app con el nombre services y añadir un archivo para cada entidad de 	    comunicación con el backend (user.service.ts,   topic.service.ts.   etc)
+	1. Primero cargar el modulo de httpModule en el "app.module" y tambien en los imports
+		import { HttpClientModule } from '@angular/common/http';		
+	2. Crear el servicio tomando en cuenta el proceso a realizar y la entidad con el cual es realizado
+		register(): Observable<any>
+	3. Crear un archivo global en la misma carpeta de services especialmente para las peticiones AJAX
+	4. Realizar la peticion con los datos del formulario con el metodo onSubmit y añadir la url correcta
+
+MANTENER UNA SESIÓN DE UN USUARIO ACTIVA
+	NOTA: La idea es usar el localstorage de un navegador para almacenar la información de un usuario logueado
+	1. Almacenar el objeto de usuario y el token convertido en string en el localstorage
+	2. Verificar el almacenamiento en el Almacenamiento Local del navegador
+
+OBTENER LOS DATOS DE USUARIO
+	1. Utilizamos un metodo en el servicio de usuarios del FrontEnd para llamar al metodo get de Backend
+
+SUBIR IMAGENES DESDE EL FRONT END
+	1. Utilizar el modulo AngularFileUploader en app.module.ts
+
+CREAR UN MODULO EXTERNO CON COMPONENTES (panel de usuarios)
+	1. Crear una nueva carpeta con componentes llamada panel dentro de modules
+	2. Generar componentes para este modulo segun las tareas que vaya a ejecutar
+	3. Tambien crear un archivo en /modules llamado panel-routing.module.ts ("panel" es el nombre del modulo creado)
+	4. Tambien creamos un archivo panel.module.ts (similar a app.module.ts)
+	5. Una vez creados (ruteo y moduleo) importar solo el modulo en app.module.ts para que funcione
+ 
+RESTRICCIONES PARA LAS PÁGINAS SIN INICIO DE SESIÓN (GUARDS)
+	1. Crear un nuevo archivo en la carpeta de servicios "user.guard.ts"
+	2. Añadir el codigo para comprobar la indentidad y redirigir a la ruta raiz
+	3. Importar el servicio de usuarios "user.service.ts" en el modulo de panel "panel.module.ts"
+	4. Importar el "Guard" tambien en el routing del panel "panel.routing.module.ts"
+
+
+
+
+
+
+	
+

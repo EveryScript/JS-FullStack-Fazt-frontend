@@ -1,0 +1,57 @@
+<div class="col-lg-12">
+    <h3> {{ page_title }} </h3>
+    <hr>
+
+    <table class="table table-hover">
+        <thead class="thead-default">
+            <tr>
+                <th>Titulo</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- NGFor para lectura de array -->
+            <tr *ngFor="let topic of topics">
+                <td> {{ topic.title }} </td>
+                <!-- Usar un PIPE para las fechas con la dependencia de Angular2-Moment (importada en app.module.ts y en panel.module.ts) -->
+                <!-- Mas información de las pipes en https://www.npmjs.com/package/angular2-moment -->
+                <td> {{ topic.date | amLocale:'es' | amDateFormat:'LL' }} </td>
+                <td>
+                    <!-- Routear un enlace con un parametro (Router) -->
+                    <a [routerLink]="['/panel/editar', topic._id]" class="btn btn-sm btn-warning mr-4">Editar</a>
+                    
+                    <!-- Boton modal de borrar -->
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" [attr.data-target]="'#modal'+topic._id">
+                        Borrar
+                    </button>
+                    <!-- Modal -->
+                   <div class="modal fade" id="{{'modal'+topic._id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                       <div class="modal-dialog" role="document">
+                       <div class="modal-content">
+                           <div class="modal-header">
+                           <h5 class="modal-title" id="exampleModalLabel">Eliminar Topic</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                               <span aria-hidden="true">&times;</span>
+                           </button>
+                           </div>
+                           <div class="modal-body">
+                            ¿Estás seguro de eliminar el Topic <strong>"{{ topic.title }}"</strong>?
+                           </div>
+                           <div class="modal-footer">
+                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                               <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="eliminarTopic(topic._id);">Aceptar</button>
+                           </div>
+                       </div>
+                       </div>
+                   </div>
+                </td>
+            </tr>
+    
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+</script>

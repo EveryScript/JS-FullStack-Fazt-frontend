@@ -1,0 +1,14 @@
+<div class="col-md-12">
+    <div class="jumbotron jumbotron-fluid text-center mt-5">
+        <div class="container">
+            <!-- Uso de propiedad definida en el componente.ts -->
+            <h1 class="display-4">{{ page_title }}</h1>
+            <p class="lead">Esta es la web para todos los programadores con preguntas y respuestas.</p>
+            <p>
+                <a class="btn btn-primary btn-lg m-3" [routerLink]="['/temas']"> Ver temas </a>
+                <a class="btn btn-success btn-lg m-3" [routerLink]="['/usuarios']"> Compañeros </a>
+                <a class="btn btn-danger btn-lg m-3" href="#"> Añadir tema </a>
+            </p>
+        </div>
+    </div>
+</div>
